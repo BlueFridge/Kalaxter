@@ -34,10 +34,10 @@ private:
     wxButton* buttonE;
     wxButton* buttonC;
     wxButton* buttonDec;
+    wxButton* buttonBak;
+    wxButton* buttonSqrt;
 
     wxTextCtrl* resultBox;
-
-    wxStaticText* smileyLabel;
 
     void button1Clicked(wxCommandEvent &event);
     void button2Clicked(wxCommandEvent &event);
@@ -56,8 +56,11 @@ private:
     void buttonEqClicked(wxCommandEvent &event);
     void buttonClsClicked(wxCommandEvent &event);
     void buttonDecimalClicked(wxCommandEvent &event);
+    void buttonBackspaceClicked(wxCommandEvent &event);
+    void buttonSqrtClicked(wxCommandEvent &event);
 
-    enum Buttons{but1=10,but2,but3,but4,but5,but6,but7,but8,but9,but0,butP,butM,butMu,butD,butE,butC,butDec};
+    enum Buttons{but1=10,but2,but3,but4,but5,but6,but7,but8,but9,but0,
+    butP,butM,butMu,butD,butE,butC,butDec,butBak,butSqrt};
 
     DECLARE_EVENT_TABLE()
 public:
