@@ -1,4 +1,5 @@
 #include "kalaxter.h"
+#include <string>
 
 BEGIN_EVENT_TABLE(Kalaxter, wxFrame)
     EVT_BUTTON(but1, Kalaxter::button1Clicked)
@@ -18,6 +19,7 @@ BEGIN_EVENT_TABLE(Kalaxter, wxFrame)
     EVT_BUTTON(butE, Kalaxter::buttonEqClicked)
     EVT_BUTTON(butC, Kalaxter::buttonClsClicked)
     EVT_BUTTON(butDec, Kalaxter::buttonDecimalClicked)
+    EVT_BUTTON(butBak, Kalaxter::buttonBackspaceClicked)
 END_EVENT_TABLE()
 
 Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPosition, wxSize(220, 340))
@@ -40,8 +42,6 @@ Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPositio
 
     this->bSizer->Add(resultBox, 0, wxEXPAND | wxTOP | wxBOTTOM, 4);
 
-    this->smileyLabel = new wxStaticText(this, wxID_ANY, wxT("☺"), wxDefaultPosition, wxSize(50,50), wxALIGN_CENTRE | wxST_NO_AUTORESIZE);
-
     wxSize buttonSize(50,50);
 
     this->button1 = new wxButton(this, but1, wxT("1"), wxDefaultPosition, buttonSize);
@@ -61,6 +61,7 @@ Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPositio
     this->buttonE = new wxButton(this, butE, wxT("="), wxDefaultPosition, buttonSize);
     this->buttonC = new wxButton(this, butC, wxT("AC"), wxDefaultPosition, buttonSize);
     this->buttonDec = new wxButton(this, butDec, wxT("."), wxDefaultPosition, buttonSize);
+    this->buttonBak = new wxButton(this, butBak, wxT("<--"), wxDefaultPosition, buttonSize);
 
     this->buttonP->Enable(false);
     this->buttonM->Enable(false);
@@ -86,7 +87,7 @@ Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPositio
     this->grid->Add(this->buttonD, 0, wxEXPAND);
     this->grid->Add(this->buttonE, 0, wxEXPAND);
     this->grid->Add(this->buttonC, 0, wxEXPAND);
-    this->grid->Add(this->smileyLabel, 0, wxEXPAND);
+    this->grid->Add(this->buttonBak, 0, wxEXPAND);
 
     this->bSizer->Add(grid, 1, wxEXPAND);
     this->SetSizer(bSizer);
@@ -441,6 +442,12 @@ void Kalaxter::buttonEqClicked(wxCommandEvent &event)
     isEqualEnabled = false;
     this->buttonE->Enable(false);
     trigger = 0;
+
+    isOperatorsEnabled = true;
+    this->buttonP->Enable(true);
+    this->buttonM->Enable(true);
+    this->buttonMu->Enable(true);
+    this->buttonD->Enable(true);
 }
 
 void Kalaxter::buttonClsClicked(wxCommandEvent &event)
@@ -467,4 +474,31 @@ void Kalaxter::buttonDecimalClicked(wxCommandEvent &event)
     this->resultBox->AppendText(wxT("."));
     this->buttonDec->Enable(false);
     decimalPlaced = true;
+}
+
+void Kalaxter::buttonBackspaceClicked(wxCommandEvent &event)
+{
+    std::string text = std::string(this->resultBox->GetValue().ToStdString());
+    int textLen = text.length();
+
+    if(textLen > 1)
+    {
+        this->resultBox->Clear();
+        text = text.substr(0, textLen-1);
+        wxString resultStr(text);
+        this->resultBox->AppendText(resultStr);
+    }
+    else if(textLen == 1)
+    {
+        this->resultBox->Clear();
+        text = text.substr(0, textLen-1);
+        wxString resultStr(text);
+        this->resultBox->AppendText(resultStr);
+        trigger = 0;
+        isOperatorsEnabled = false;
+        this->buttonP->Enable(false);
+        this->buttonM->Enable(false);
+        this->buttonMu->Enable(false);
+        this->buttonD->Enable(false);
+    }
 }
