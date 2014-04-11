@@ -421,6 +421,8 @@ void Kalaxter::buttonDivClicked(wxCommandEvent &event)
 
 void Kalaxter::buttonEqClicked(wxCommandEvent &event)
 {
+    bool divZero = false;
+
     double memory_b = memory;
     this->resultBox->GetValue().ToDouble(&memory);
     switch(operation)
@@ -438,6 +440,7 @@ void Kalaxter::buttonEqClicked(wxCommandEvent &event)
         if(memory == 0)
         {
             result = 0;
+            divZero = true;
         }
         else
         {
@@ -446,7 +449,13 @@ void Kalaxter::buttonEqClicked(wxCommandEvent &event)
         break;
     }
 
-    wxString resultStr = wxString::Format(wxT("%f"), result);
+    wxString resultStr;
+
+    if(divZero)
+        resultStr = wxString::Format(wxT("%f [Math Error]"), result);
+    else
+        resultStr = wxString::Format(wxT("%f"), result);
+
     this->resultBox->Clear();
     this->resultBox->AppendText(resultStr);
 
@@ -523,10 +532,21 @@ void Kalaxter::buttonBackspaceClicked(wxCommandEvent &event)
 void Kalaxter::buttonSqrtClicked(wxCommandEvent &event)
 {
     this->resultBox->GetValue().ToDouble(&memory);
-    double _sqrt_ = std::sqrt(memory);
-    result = _sqrt_;
 
     this->resultBox->Clear();
-    wxString resultStr = wxString::Format(wxT("%f"), result);
+    wxString resultStr;
+
+    if(memory > 0)
+    {
+        double _sqrt_ = std::sqrt(memory);
+        result = _sqrt_;
+        resultStr = wxString::Format(wxT("%f"), result);
+    }
+    else
+    {
+        result = 0;
+        resultStr = wxString::Format(wxT("%f [Math Error]"), result);
+    }
+
     this->resultBox->AppendText(resultStr);
 }
