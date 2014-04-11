@@ -1,5 +1,6 @@
 #include "kalaxter.h"
 #include <string>
+#include <cmath>
 
 BEGIN_EVENT_TABLE(Kalaxter, wxFrame)
     EVT_BUTTON(but1, Kalaxter::button1Clicked)
@@ -20,9 +21,10 @@ BEGIN_EVENT_TABLE(Kalaxter, wxFrame)
     EVT_BUTTON(butC, Kalaxter::buttonClsClicked)
     EVT_BUTTON(butDec, Kalaxter::buttonDecimalClicked)
     EVT_BUTTON(butBak, Kalaxter::buttonBackspaceClicked)
+    EVT_BUTTON(butSqrt, Kalaxter::buttonSqrtClicked)
 END_EVENT_TABLE()
 
-Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPosition, wxSize(220, 340))
+Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPosition, wxSize(220, 400))
 {
     memory = 0;
     result = 0;
@@ -62,6 +64,7 @@ Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPositio
     this->buttonC = new wxButton(this, butC, wxT("AC"), wxDefaultPosition, buttonSize);
     this->buttonDec = new wxButton(this, butDec, wxT("."), wxDefaultPosition, buttonSize);
     this->buttonBak = new wxButton(this, butBak, wxT("<--"), wxDefaultPosition, buttonSize);
+    this->buttonSqrt = new wxButton(this, butSqrt, wxT("Sqrt"), wxDefaultPosition, buttonSize);
 
     this->buttonP->Enable(false);
     this->buttonM->Enable(false);
@@ -69,6 +72,7 @@ Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPositio
     this->buttonD->Enable(false);
     this->buttonE->Enable(false);
     this->buttonDec->Enable(false);
+    this->buttonSqrt->Enable(false);
 
     this->grid->Add(this->button1, 0, wxEXPAND);
     this->grid->Add(this->button2, 0, wxEXPAND);
@@ -88,6 +92,7 @@ Kalaxter::Kalaxter() : wxFrame(NULL, wxID_ANY, wxT("Kalaxter"), wxDefaultPositio
     this->grid->Add(this->buttonE, 0, wxEXPAND);
     this->grid->Add(this->buttonC, 0, wxEXPAND);
     this->grid->Add(this->buttonBak, 0, wxEXPAND);
+    this->grid->Add(this->buttonSqrt, 0, wxEXPAND);
 
     this->bSizer->Add(grid, 1, wxEXPAND);
     this->SetSizer(bSizer);
@@ -108,6 +113,7 @@ void Kalaxter::button1Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -131,6 +137,7 @@ void Kalaxter::button2Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -154,6 +161,7 @@ void Kalaxter::button3Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -177,6 +185,7 @@ void Kalaxter::button4Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -200,6 +209,7 @@ void Kalaxter::button5Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -223,6 +233,7 @@ void Kalaxter::button6Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -246,6 +257,7 @@ void Kalaxter::button7Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -269,6 +281,7 @@ void Kalaxter::button8Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -292,6 +305,7 @@ void Kalaxter::button9Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -315,6 +329,7 @@ void Kalaxter::button0Clicked(wxCommandEvent &event)
         this->buttonM->Enable(true);
         this->buttonMu->Enable(true);
         this->buttonD->Enable(true);
+        this->buttonSqrt->Enable(true);
     }
     if(trigger == 1 && isEqualEnabled == false)
     {
@@ -466,6 +481,7 @@ void Kalaxter::buttonClsClicked(wxCommandEvent &event)
     this->buttonD->Enable(false);
     this->buttonE->Enable(false);
     this->buttonDec->Enable(false);
+    this->buttonSqrt->Enable(false);
     this->resultBox->Clear();
 }
 
@@ -500,5 +516,17 @@ void Kalaxter::buttonBackspaceClicked(wxCommandEvent &event)
         this->buttonM->Enable(false);
         this->buttonMu->Enable(false);
         this->buttonD->Enable(false);
+        this->buttonSqrt->Enable(false);
     }
+}
+
+void Kalaxter::buttonSqrtClicked(wxCommandEvent &event)
+{
+    this->resultBox->GetValue().ToDouble(&memory);
+    double _sqrt_ = std::sqrt(memory);
+    result = _sqrt_;
+
+    this->resultBox->Clear();
+    wxString resultStr = wxString::Format(wxT("%f"), result);
+    this->resultBox->AppendText(resultStr);
 }
